@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Art Booking</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    </head>
+
+    <body>
+        <nav>
+            <h2>Art Booking Website</h2>
+
+            <div>
+                <a href="/pricing">Pricing</a>
+                <a href="/booking">Book now</a>
+                <a href="/logout">Logout</a>
+                <a href="/gallery">Gallery</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <h1>Bring your ideas to Life</h1>
+            <p>
+                Custom portaits,landscapes,academic drawing,engineering designs,comic and manga characters art work
+
+            </p>
+
+            <a class="btn" href="/booking">Book your art work</a>
+        </section>
+
+        <section class="categories">
+            <h2>Our services</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3> Academic Drawing</h3>
+                    <p>Lab Drawings and engineering designs</p>
+
+                </div>
+
+                <div class="card">
+                    <h3>Observational Arts</h3>
+                    <p>Portaits,Landscapes and Realistics Drawings</p>
+                </div>
+
+                <div class="card">
+                    <h3>Comic and Manga Characters</h3>
+                    <p>Custom-designed characters for your favorite stories</p>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

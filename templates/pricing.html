@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pricing</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='prices.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <h2>Art Commission Studio</h2>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/booking">Book</a>
+        <a href="/logout">Logout</a>
+    </div>
+</nav>
+
+<h1 class="title">
+    Our Pricing
+</h1>
+
+
+<div class="cards">
+
+{% for item in prices %}
+
+<div class="card">
+
+<h3>
+{{ item[0] }}
+</h3>
+
+<p>
+Type: {{ item[1] }}
+</p>
+
+<p>
+Style: {{ item[2] }}
+</p>
+
+<p>
+Price:
+₹{{ item[3] }}
+{% if item[3] != item[4] %}
+ - ₹{{ item[4] }}
+{% endif %}
+</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+
+</html>

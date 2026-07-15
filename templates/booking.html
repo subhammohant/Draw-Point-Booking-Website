@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Artwork</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<h1>Book Your Artwork</h1>
+
+<p style="color:red;">
+    Academic Artwork Notice:
+    Delivery requires a minimum of 3 days.
+    Requests for delivery within 1 day will be automatically rejected.
+    Academic bookings have limited slots.
+</p>
+
+<form method="POST">
+
+    <label>Select Artwork</label>
+    <select name="pricing_id" required>
+        <option value="">-- Select Artwork --</option>
+
+        {% for price in artwork %}
+        <option value="{{ price[0] }}">
+            {{ price[1] }} | {{ price[2] }} | {{ price[3] }}
+            | ₹{{ price[4] }} - ₹{{ price[5] }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Description</label>
+    <textarea name="description" rows="4" cols="40"></textarea>
+
+    <br><br>
+
+    <label>Required Delivery Date</label>
+    <input type="date" name="booking_date" required>
+
+    <br><br>
+
+    <label>Choose Time Slot</label>
+    <select name="time_slot" required>
+        <option value="Slot 1">
+            Slot 1 (10:00 AM - 12:00 PM)
+        </option>
+
+        <option value="Slot 2">
+            Slot 2 (12:00 PM - 2:00 PM)
+        </option>
+
+        <option value="Slot 3">
+            Slot 3 (2:00 PM - 4:00 PM)
+        </option>
+
+        <option value="Slot 4">
+            Slot 4 (4:00 PM - 6:00 PM)
+        </option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Confirm Booking</button>
+
+</form>
+
+</body>
+</html>

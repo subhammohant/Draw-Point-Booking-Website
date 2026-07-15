@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmed</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='confirmation.css') }}">
+</head>
+<body>
+
+<div class="confirm-box">
+
+    <div class="success-icon">✓</div>
+
+    <h1>Booking Confirmed!</h1>
+
+    <p class="message">
+        Thank you for your booking. Your request has been received successfully.
+    </p>
+
+    <div class="details">
+
+        <p><strong>Booking ID:</strong> {{ booking_id }}</p>
+
+        <p><strong>Status:</strong>
+            <span class="pending">Pending</span>
+        </p>
+
+        <p><strong>Email:</strong> {{ email }}</p>
+
+    </div>
+
+    <div class="note">
+        📧 A confirmation email will be sent to your registered email address.
+    </div>
+
+    <a href="{{ url_for('index') }}" class="btn">
+        Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>
