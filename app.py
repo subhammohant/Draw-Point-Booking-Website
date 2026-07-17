@@ -1,10 +1,10 @@
 import sqlite3 
 import os          
 from flask import Flask,request,render_template,redirect,session,url_for
-from werkzeug.security import generate_password_hash,check_password_hash        
+from werkzeug.security import generate_password_hash,check_password_hash  
+import resend       
 import smtplib 
-from email.mime.text import MIMEText 
-from email.mime.multipart import MIMEMultipart 
+
 
 app=Flask(__name__)
 app.secret_key="sihwfjbwfvjedghewvyh26746388ur9bvn@jhfryjbuf7w7bvy2_+++ubej"
@@ -209,53 +209,28 @@ def gallery():
 
 #Email sending function 
 
-def send_email(reciver_mail,booking_id,art_type,style):
-    try:
-        sender_email="subhammohanty397@gmail.com"
-        
-      
-        app_password="jhfk qqer dkii sphl"
-    
-        subject="Booking confirmation-DrawPoint"
-    
-        body = f"""
-                Hello,
-                Thank you for booking with DrawPoint. Your booking reference is {booking_id}. We look forward to create your artwork.
-            --------------------------------------------------------------------------------------------------------------------------
-                Booking_id:{booking_id}
-                status:pending
-                Art Type:{art_type}
-                Style:{style}
-                Please keep this booking Id for future reference.
-    
-             ---------------------------------------------------------------------------------------------------------------------------
-                If you have any questions,feel free to contact us at subhammohanty397@gmail.com
-    
-                Thank you,
-                Team DrawPoint
-            """
-        msg=MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = reciver_mail
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
-        
-        with smtplib.SMTP("smtp.gmail.com", 587, timeout=20) as server:
-            print("Connecting to Gmail...")
-            server.starttls()
-            print("Logging in")
-            server.login(sender_email, app_password)
-            print("sending email")
-            server.send_message(msg)
-            
-           
+def send_email(receiver_mail, booking_id, art_type, style):
 
-            
-        print("email sent successfully")
-        
-    except Exception as e:
-        print("error send email", e)
-      
+    resend.api_key = os.environ["re_ht9BkoFk_PXYuFPsLtSaPvTE7Dpjxe128"]
+
+    resend.Emails.send({
+        "from": "DrawPoint <onboarding@resend.dev>",
+        "to": receiver_mail,
+        "subject": "Booking Confirmation - DrawPoint",
+        "html": f"""
+        <h2>Booking Confirmed!</h2>
+
+        <p>Thank you for booking with DrawPoint.</p>
+
+        <p><strong>Booking ID:</strong> {booking_id}</p>
+        <p><strong>Status:</strong> Pending</p>
+        <p><strong>Art Type:</strong> {art_type}</p>
+        <p><strong>Style:</strong> {style}</p>
+
+        <p>Please keep this Booking ID for future reference.</p>
+        """
+    })
+    
       
     
    
