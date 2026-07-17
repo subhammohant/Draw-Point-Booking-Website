@@ -183,7 +183,7 @@ def booking():
         user_email = cur.fetchone()[0]
         
         #send confirmation email
-        #send_email(user_email, booking_reference, art_type, style)
+        send_email(user_email, booking_reference, art_type, style)
         
         return render_template("confirmation.html",booking_reference=booking_reference)
     
@@ -210,38 +210,55 @@ def gallery():
 #Email sending function 
 
 def send_email(reciver_mail,booking_id,art_type,style):
-    sender_email="subhammohanty397@gmail.com"
-    app_password="jhfk qqer dkii sphl"
+    try:
+        sender_email="subhammohanty397@gmail.com"
+        
+      
+        app_password="jhfk qqer dkii sphl"
     
-    subject="Booking confirmation-DrawPoint"
+        subject="Booking confirmation-DrawPoint"
     
-    body = f"""
-    Hello,
-    Thank you for booking with DrawPoint. Your booking reference is {booking_id}. We look forward to create your artwork.
-    --------------------------------------------------------------------------------------------------------------------------
-    Booking_id:{booking_id}
-    status:pending
-    Art Type:{art_type}
-    Style:{style}
-    Please keep this booking Id for future reference.
+        body = f"""
+                Hello,
+                Thank you for booking with DrawPoint. Your booking reference is {booking_id}. We look forward to create your artwork.
+            --------------------------------------------------------------------------------------------------------------------------
+                Booking_id:{booking_id}
+                status:pending
+                Art Type:{art_type}
+                Style:{style}
+                Please keep this booking Id for future reference.
     
-    ---------------------------------------------------------------------------------------------------------------------------
-    If you have any questions,feel free to contact us at subhammohanty397@gmail.com
+             ---------------------------------------------------------------------------------------------------------------------------
+                If you have any questions,feel free to contact us at subhammohanty397@gmail.com
     
-    Thank you,
-    Team DrawPoint
-    """
-    msg=MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = reciver_mail
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-    
-    with smtplib.SMTP('smtp.gmail.com',587) as server:
-        server.starttls()
-        server.login(sender_email,app_password)
-        server.send_message(msg)
+                Thank you,
+                Team DrawPoint
+            """
+        msg=MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = reciver_mail
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+        
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=20) as server:
+            print("Connecting to Gmail...")
+            server.starttls()
+            print("Logging in")
+            server.login(sender_email, app_password)
+            print("sending email")
+            server.send_message(msg)
+            
+           
 
+            
+        print("email sent successfully")
+        
+    except Exception as e:
+        print("error send email", e)
+      
+      
+    
+   
 #------------------------------------------xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx----------------------------------------
 
 #App run code
