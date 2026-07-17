@@ -211,7 +211,7 @@ def gallery():
 
 def send_email(receiver_mail, booking_id, art_type, style):
 
-    resend.api_key = os.environ["re_ht9BkoFk_PXYuFPsLtSaPvTE7Dpjxe128"]
+    resend.api_key = os.environ["API_KEY"]
 
     resend.Emails.send({
         "from": "DrawPoint <onboarding@resend.dev>",
