@@ -183,7 +183,7 @@ def booking():
         user_email = cur.fetchone()[0]
         
         #send confirmation email
-        send_email(user_email, booking_reference, art_type, style)
+        #send_email(user_email, booking_reference, art_type, style)
         
         return render_template("confirmation.html",booking_reference=booking_reference)
     
