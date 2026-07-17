@@ -2,8 +2,10 @@ import sqlite3
 import os          
 from flask import Flask,request,render_template,redirect,session,url_for
 from werkzeug.security import generate_password_hash,check_password_hash  
-import resend       
-import smtplib 
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+
+
 
 
 app=Flask(__name__)
@@ -210,26 +212,41 @@ def gallery():
 #Email sending function 
 
 def send_email(receiver_mail, booking_id, art_type, style):
+    configuration = sib_api_v3_sdk.Configuration()
+    configuration.api_key['api-key'] = os.environ["API_KEY"]
 
-    resend.api_key = os.environ["API_KEY"]
+    api_instance = sib_api_v3_sdk.TransactionalEmailsApi(
+        sib_api_v3_sdk.ApiClient(configuration)
+    )
 
-    resend.Emails.send({
-        "from": "DrawPoint <onboarding@resend.dev>",
-        "to": receiver_mail,
-        "subject": "Booking Confirmation - DrawPoint",
-        "html": f"""
+    sender = {
+        "name": "DrawPoint",
+        "email": "your_verified_email@example.com"
+    }
+
+    email = sib_api_v3_sdk.SendSmtpEmail(
+        to=[{"email": receiver_mail}],
+        sender=sender,
+        subject="Booking Confirmation - DrawPoint",
+        html_content=f"""
         <h2>Booking Confirmed!</h2>
 
         <p>Thank you for booking with DrawPoint.</p>
 
         <p><strong>Booking ID:</strong> {booking_id}</p>
-        <p><strong>Status:</strong> Pending</p>
         <p><strong>Art Type:</strong> {art_type}</p>
         <p><strong>Style:</strong> {style}</p>
 
-        <p>Please keep this Booking ID for future reference.</p>
+        <p>Status: Pending</p>
         """
-    })
+    )
+
+    try:
+        api_instance.send_transac_email(email)
+        print("Email sent successfully")
+
+    except ApiException as e:
+        print("Brevo Error:", e)
     
       
     

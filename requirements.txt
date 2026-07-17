@@ -1,4 +1,4 @@
 Flask
 gunicorn
 Werkzeug
-resend
+sib_api_v3_sdk
