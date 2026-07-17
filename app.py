@@ -221,7 +221,7 @@ def send_email(receiver_mail, booking_id, art_type, style):
 
     sender = {
         "name": "DrawPoint",
-        "email": "your_verified_email@example.com"
+        "email": "subhammohanty397@gmail.com"
     }
 
     email = sib_api_v3_sdk.SendSmtpEmail(
