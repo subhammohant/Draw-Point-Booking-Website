@@ -185,9 +185,25 @@ def booking():
         
         print("booking id generated",booking_reference)
         
-        #get user email
+        #debug session 
+        print("Session user id",session.get("user_id"))
+        #get user email 
         cur.execute("SELECT email FROM USER WHERE id=?",(session["user_id"],))
-        user_email = cur.fetchone()[0]
+        result = cur.fetchone()
+        print("Query result",result)
+        
+        #show all users 
+        cur.execute("SELECT id, name, email FROM USER")
+        print("Users in DB:", cur.fetchall())
+        
+        if result is None:
+            print("No user found with the given ID.")
+            conn.close()
+            return "User not found",400
+        
+        user_email = result[0]
+        print("User email retrieved:", user_email)
+        
         
         #send confirmation email
         send_email(user_email, booking_reference, art_type, style)
