@@ -105,6 +105,10 @@ def login():
         password = request.form["password"]
         
         conn = sqlite3.connect(DATABASE)
+        
+
+        print("DATABASE =", DATABASE)
+        print("ABSOLUTE PATH =", os.path.abspath(DATABASE))
         cur = conn.cursor()
         
         cur.execute("SELECT id, password FROM USER WHERE email=?",(email,))
@@ -113,6 +117,7 @@ def login():
         conn.close()
         
         if (user and check_password_hash(user[1],password)):
+            session.clear()
             session["user_id"]=user[0]
             
             print("Logged in user_id:", user[0])
