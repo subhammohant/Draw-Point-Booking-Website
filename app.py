@@ -289,6 +289,8 @@ def send_email(receiver_mail, booking_id, art_type, style):
 if __name__ == '__main__':
     os.makedirs('database',exist_ok=True)
     create_database()
+    print("Login user tuple:", user)
+    print("Session user_id:", session["user_id"])
     app.run(debug=True)
 
 
