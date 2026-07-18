@@ -72,7 +72,7 @@ def index():
 
 #---------------------------xxxxxxxxxxxxxxxxxxxxxx--------------------------------------------------------
 
-# type: ignore
+# Registration route
 @app.route("/register",methods=["GET","POST"])
 def register():
     if request.method=="POST":
@@ -114,6 +114,11 @@ def login():
         
         if (user and check_password_hash(user[1],password)):
             session["user_id"]=user[0]
+            
+            print("Logged in user_id:", user[0])
+
+            cur.execute("SELECT id, name, email FROM USER")
+            print("Users in DB:", cur.fetchall())
             
             return redirect(url_for('index'))
         else:
@@ -188,6 +193,8 @@ def booking():
         send_email(user_email, booking_reference, art_type, style)
         
         return render_template("confirmation.html",booking_reference=booking_reference)
+    
+    
     
     cur.execute("""SELECT id, category, art_type, style, min_price, max_price FROM PRICING""")
     
