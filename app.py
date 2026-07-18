@@ -114,7 +114,7 @@ def login():
         cur.execute("SELECT id, password FROM USER WHERE email=?",(email,))
         
         user = cur.fetchone()
-        conn.close()
+        
         
         if (user and check_password_hash(user[1],password)):
             session.clear()
@@ -127,6 +127,7 @@ def login():
             
             return redirect(url_for('index'))
         else:
+            conn.close()
             return "invalid email id"
         
     return render_template("login.html")
