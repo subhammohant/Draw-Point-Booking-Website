@@ -117,7 +117,7 @@ def login():
         print("ABSOLUTE PATH =", os.path.abspath(DATABASE_URL))
         cur = conn.cursor()
         
-        cur.execute("SELECT id, password FROM USER WHERE email=%s",(email,))
+        cur.execute("SELECT id, password FROM users WHERE email=%s",(email,))
         
         user = cur.fetchone()
         
