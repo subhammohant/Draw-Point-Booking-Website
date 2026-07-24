@@ -194,12 +194,12 @@ def booking():
         #debug session 
         print("Session user id",session.get("user_id"))
         #get user email 
-        cur.execute("SELECT email FROM USER WHERE id=%s",(session["user_id"],))
+        cur.execute("SELECT email FROM users WHERE id=%s",(session["user_id"],))
         result = cur.fetchone()
         print("Query result",result)
         
         #show all users 
-        cur.execute("SELECT id, name, email FROM USER")
+        cur.execute("SELECT id, name, email FROM users")
         print("Users in DB:", cur.fetchall())
         
         if result is None:
