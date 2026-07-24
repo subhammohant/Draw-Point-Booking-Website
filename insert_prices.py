@@ -1,8 +1,10 @@
-import sqlite3 
+import os
 
-DATABASE="database/art_booking.db"
+import psycopg2
 
-conn = sqlite3.connect(DATABASE)
+DATABASE_URL=os.environ.get("postgresql://drawpoint_user:KWxwoMHOoOGKKC6Ggic4v4HN7NdrQpO3@dpg-d9hfjnkm0tmc73ap4oo0-a/drawpoint")
+
+conn = psycopg2.connect(DATABASE_URL)
 cur = conn.cursor()
 
 prices =[
@@ -19,7 +21,7 @@ prices =[
 cur.executemany("""
                 INSERT INTO PRICING(
                     category,art_type,style,min_price,max_price)
-                    VALUES(?,?,?,?,?)""",prices)
+                    VALUES(%s,%s,%s,%s,%s)""",prices)
 
 conn.commit()
 conn.close()

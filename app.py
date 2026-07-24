@@ -1,4 +1,4 @@
-import sqlite3 
+import psycopg2
 import os          
 from flask import Flask,request,render_template,redirect,session,url_for
 from werkzeug.security import generate_password_hash,check_password_hash  
@@ -14,11 +14,11 @@ app.secret_key="sihwfjbwfvjedghewvyh26746388ur9bvn@jhfryjbuf7w7bvy2_+++ubej"
 
 
 #DATABASE FOR BOOKING WEBSITE
-DATABASE="database/art_booking.db"
+DATABASE_URL=OS.environ.get("postgresql://drawpoint_user:KWxwoMHOoOGKKC6Ggic4v4HN7NdrQpO3@dpg-d9hfjnkm0tmc73ap4oo0-a/drawpoint")
 
 
 def create_database():
-    conn =sqlite3.connect(DATABASE)
+    conn =psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     
     #USERSTABLE
@@ -80,14 +80,14 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
         hashed_password = generate_password_hash(password)
-        conn =sqlite3.connect(DATABASE)
-        cur =conn.cursor()
+        conn =psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor()
         
         try:
-            cur.execute('''INSERT INTO USER(name,email,password) VALUES(?,?,?)''',(name,email,hashed_password))
+            cur.execute('''INSERT INTO USER(name,email,password) VALUES(%s,%s,%s)''',(name,email,hashed_password))
             conn.commit()
             
-        except sqlite3.IntegrityError:
+        except psycopg2.IntegrityError:
             return "Email already exists"
         finally:
             conn.close()
@@ -104,14 +104,14 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         
-        conn = sqlite3.connect(DATABASE)
+        conn = psycopg2.connect(DATABASE_URL)
         
 
-        print("DATABASE =", DATABASE)
-        print("ABSOLUTE PATH =", os.path.abspath(DATABASE))
+        print("DATABASE =", DATABASE_URL)
+        print("ABSOLUTE PATH =", os.path.abspath(DATABASE_URL))
         cur = conn.cursor()
         
-        cur.execute("SELECT id, password FROM USER WHERE email=?",(email,))
+        cur.execute("SELECT id, password FROM USER WHERE email=%s",(email,))
         
         user = cur.fetchone()
         
@@ -146,7 +146,7 @@ def logout():
 
 @app.route("/pricing")
 def pricing():
-    conn = sqlite3.connect(DATABASE)
+    conn = psycopg2.connect(DATABASE_URL)
     cur=conn.cursor()
     
     cur.execute("""
@@ -165,7 +165,7 @@ def booking():
     if "user_id" not in session:
         return redirect(url_for("login"))
     
-    conn = sqlite3.connect(DATABASE)
+    conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     
     if request.method == "POST":
@@ -175,14 +175,14 @@ def booking():
         time_slot = request.form["time_slot"]
         print("pricing id recieved",pricing_id)
         
-        cur.execute("SELECT art_type,style FROM PRICING WHERE id=?",(pricing_id,))
+        cur.execute("SELECT art_type,style FROM PRICING WHERE id=%s",(pricing_id,))
         data = cur.fetchone()
         art_type=data[0]
         style=data[1]
         
         #insert booking into BOOKINGS table
         cur.execute("""
-                    INSERT INTO BOOKINGS(user_id,pricing_id,art_type,style,description,booking_date,time_slot) VALUES(?,?,?,?,?,?,?)""",
+                    INSERT INTO BOOKINGS(user_id,pricing_id,art_type,style,description,booking_date,time_slot) VALUES(%s,%s,%s,%s,%s,%s,%s)""",
                     (session["user_id"],pricing_id,art_type,style,description,booking_date,time_slot))
         conn.commit()
         
@@ -194,7 +194,7 @@ def booking():
         #debug session 
         print("Session user id",session.get("user_id"))
         #get user email 
-        cur.execute("SELECT email FROM USER WHERE id=?",(session["user_id"],))
+        cur.execute("SELECT email FROM USER WHERE id=%s",(session["user_id"],))
         result = cur.fetchone()
         print("Query result",result)
         
@@ -289,7 +289,7 @@ def send_email(receiver_mail, booking_id, art_type, style):
 if __name__ == '__main__':
     os.makedirs('database',exist_ok=True)
     create_database()
-    print("Login user tuple:", user)
+    print("Login user tuple:", user) # type: ignore
     print("Session user_id:", session["user_id"])
     app.run(debug=True)
 
