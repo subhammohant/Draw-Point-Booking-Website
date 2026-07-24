@@ -8,8 +8,11 @@ from sib_api_v3_sdk.rest import ApiException
 
 
 
-app=Flask(__name__)
+app=Flask(__name__) 
 app.secret_key="sihwfjbwfvjedghewvyh26746388ur9bvn@jhfryjbuf7w7bvy2_+++ubej"
+
+
+
 
 
 
@@ -59,6 +62,9 @@ def create_database():
     
     conn.commit()
     conn.close()
+    
+create_database() # Calling databasee creation function 
+
     
 #create home page route 
 @app.route("/")
@@ -288,7 +294,7 @@ def send_email(receiver_mail, booking_id, art_type, style):
 
 if __name__ == '__main__':
     os.makedirs('database',exist_ok=True)
-    create_database()
+    
     print("Login user tuple:", user) # type: ignore
     print("Session user_id:", session["user_id"])
     app.run(debug=True)
