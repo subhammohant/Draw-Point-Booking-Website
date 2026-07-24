@@ -14,7 +14,7 @@ app.secret_key="sihwfjbwfvjedghewvyh26746388ur9bvn@jhfryjbuf7w7bvy2_+++ubej"
 
 
 #DATABASE FOR BOOKING WEBSITE
-DATABASE_URL=OS.environ.get("postgresql://drawpoint_user:KWxwoMHOoOGKKC6Ggic4v4HN7NdrQpO3@dpg-d9hfjnkm0tmc73ap4oo0-a/drawpoint")
+DATABASE_URL=os.environ.get("postgresql://drawpoint_user:KWxwoMHOoOGKKC6Ggic4v4HN7NdrQpO3@dpg-d9hfjnkm0tmc73ap4oo0-a/drawpoint")
 
 
 def create_database():
