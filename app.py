@@ -84,7 +84,7 @@ def register():
         cur = conn.cursor()
         
         try:
-            cur.execute('''INSERT INTO USER(name,email,password) VALUES(%s,%s,%s)''',(name,email,hashed_password))
+            cur.execute('''INSERT INTO users(name,email,password) VALUES(%s,%s,%s)''',(name,email,hashed_password))
             conn.commit()
             
         except psycopg2.IntegrityError:
@@ -122,7 +122,7 @@ def login():
             
             print("Logged in user_id:", user[0])
 
-            cur.execute("SELECT id, name, email FROM USER")
+            cur.execute("SELECT id, name, email FROM users")
             print("Users in DB:", cur.fetchall())
             
             return redirect(url_for('index'))
